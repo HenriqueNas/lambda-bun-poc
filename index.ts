@@ -1,8 +1,11 @@
-import { BaseError, InternalServerError, NotFoundError } from "./src/errors.ts";
+import { BaseError, InternalServerError } from "./src/errors.ts";
 import { routeHandler } from "./src/router.ts";
 
-Bun.serve({
-  port: 8080,
+const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+const NODE_ENV = process.env.NODE_ENV ?? "dev";
+
+const serve = Bun.serve({
+  port: PORT,
   fetch(req) {
     try {
       const url = new URL(req.url);
@@ -18,3 +21,7 @@ Bun.serve({
     }
   },
 });
+
+console.log(`[${NODE_ENV}] Server running on port ${serve.port}`);
+
+export default { serve };
